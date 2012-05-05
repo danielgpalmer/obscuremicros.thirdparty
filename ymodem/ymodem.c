@@ -110,25 +110,6 @@ static uint16_t crc16(const uint8_t *buf, uint32_t count) {
 	return crc;
 }
 
-static const char *u32_to_str(uint32_t val) {
-	/* Maximum number of decimal digits in u32 is 10 */
-	static char num_str[11];
-	int pos = 10;
-	num_str[10] = 0;
-
-	if (val == 0) {
-		/* If already zero then just return zero */
-		return "0";
-	}
-
-	while ((val != 0) && (pos > 0)) {
-		num_str[--pos] = (val % 10) + '0';
-		val /= 10;
-	}
-
-	return &num_str[pos];
-}
-
 static uint32_t str_to_u32(char* str) {
 	const char *s = str;
 	uint32_t acc;
@@ -366,6 +347,25 @@ unsigned long ymodem_receive(uint8_t* buf, uint32_t length) {
 }
 
 #ifndef YMODEM_RECVONLY
+
+static const char *u32_to_str(uint32_t val) {
+	/* Maximum number of decimal digits in u32 is 10 */
+	static char num_str[11];
+	int pos = 10;
+	num_str[10] = 0;
+
+	if (val == 0) {
+		/* If already zero then just return zero */
+		return "0";
+	}
+
+	while ((val != 0) && (pos > 0)) {
+		num_str[--pos] = (val % 10) + '0';
+		val /= 10;
+	}
+
+	return &num_str[pos];
+}
 
 static void send_packet(uint8_t *data, int block_no) {
 	int count, crc, packet_size;
